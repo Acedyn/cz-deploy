@@ -1,0 +1,28 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cz-alpha-deployment
+  namespace: cz-alpha-stack
+  labels:
+    app: cz-alpha-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: cz-alpha-app
+  template:
+    metadata:
+      labels:
+        app: cz-alpha-app
+    spec:
+      containers:
+        - name: cz-front
+          image: 494528721262.dkr.ecr.us-east-1.amazonaws.com/cz-front
+          ports:
+            - name: http
+              containerPort: 80
+          imagePullPolicy: IfNotPresent
+      nodeSelector:
+        kubernetes.io/os: linux
