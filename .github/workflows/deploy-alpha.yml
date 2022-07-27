@@ -18,7 +18,7 @@ jobs:
           - repo: cz-front
             kubectl_namespace: cz-alpha-stack
           - repo: cz-storybook
-            docker: ./deploy/Dockerfile.storybook
+            kubectl_namespace: cz-alpha-stack
 
     runs-on: ubuntu-latest
     environment: production
