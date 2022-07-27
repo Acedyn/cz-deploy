@@ -1,0 +1,45 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cz-storybook-deployment
+  namespace: cz-alpha-stack
+  labels:
+    app: cz-storybook-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: cz-storybook-app
+  template:
+    metadata:
+      labels:
+        app: cz-storybook-app
+    spec:
+      containers:
+        - name: cz-front
+          image: 494528721262.dkr.ecr.us-east-1.amazonaws.com/cz-storybook
+          ports:
+            - name: http
+              containerPort: 80
+          imagePullPolicy: Always
+      nodeSelector:
+        kubernetes.io/os: linux
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: cz-storybook-service
+  namespace: cz-alpha-stack
+  labels:
+    app: cz-storybook-app
+spec:
+  selector:
+    app: cz-storybook-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

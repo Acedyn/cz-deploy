@@ -3,19 +3,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cz-alpha-deployment
+  name: cz-front-deployment
   namespace: cz-alpha-stack
   labels:
-    app: cz-alpha-app
+    app: cz-front-app
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: cz-alpha-app
+      app: cz-front-app
   template:
     metadata:
       labels:
-        app: cz-alpha-app
+        app: cz-front-app
     spec:
       containers:
         - name: cz-front
@@ -26,3 +26,20 @@ spec:
           imagePullPolicy: Always
       nodeSelector:
         kubernetes.io/os: linux
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: cz-front-service
+  namespace: cz-alpha-stack
+  labels:
+    app: cz-front-app
+spec:
+  selector:
+    app: cz-front-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

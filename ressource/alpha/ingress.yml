@@ -1,0 +1,31 @@
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cz-ingress
+  namespace: cz-alpha-stack
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: "alphatestingcz.xyz"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: cz-front-service
+                port:
+                  number: 80
+
+    - host: "storybook.alphatestingcz.xyz"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: cz-storybook-service
+                port:
+                  number: 80
