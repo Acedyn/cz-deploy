@@ -8,7 +8,7 @@ metadata:
   labels:
     app: cz-storybook-app
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: cz-storybook-app

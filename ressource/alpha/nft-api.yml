@@ -1,0 +1,54 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cz-nft-api-deployment
+  namespace: cz-alpha-stack
+  labels:
+    app: cz-nft-api-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cz-nft-api-app
+  template:
+    metadata:
+      labels:
+        app: cz-nft-api-app
+    spec:
+      containers:
+        - name: cz-nft-api
+          image: 494528721262.dkr.ecr.us-east-1.amazonaws.com/cz-nft-api
+          ports:
+            - name: http
+              containerPort: 80
+          imagePullPolicy: Always
+          env:
+            - name: CZ_PORT
+              value: "80"
+            - name: CZ_ENV
+              value: "prod"
+            - name: CZ_RPC
+              value: "https://api.mainnet-beta.solana.com"
+            - name: GIN_MODE
+              value: "release"
+      nodeSelector:
+        kubernetes.io/os: linux
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: cz-nft-api-service
+  namespace: cz-alpha-stack
+  labels:
+    app: cz-nft-api-app
+spec:
+  selector:
+    app: cz-nft-api-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

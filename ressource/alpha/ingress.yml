@@ -29,3 +29,14 @@ spec:
                 name: cz-storybook-service
                 port:
                   number: 80
+
+    - host: "nftapi.alphatestingcz.xyz"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: cz-nft-api-service
+                port:
+                  number: 80
