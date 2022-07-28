@@ -29,10 +29,13 @@ spec:
               value: "80"
             - name: CZ_ENV
               value: "prod"
-            - name: CZ_RPC
-              value: "https://api.mainnet-beta.solana.com"
             - name: GIN_MODE
               value: "release"
+            - name: CZ_RPC
+              valueFrom:
+                secretKeyRef:
+                  name: cz-secret
+                  key: CZ_API_RPC_URL
       nodeSelector:
         kubernetes.io/os: linux
 
