@@ -74,17 +74,30 @@ can be used to create or update a deployment.
 
 The service describe the entrypoint of the cluster, it's like a reverse proxy.
 
-
 ## First configuration
 
 If you are deploying the cluster for the first time, you will need to setup:
 
+- [deploy the secret ressources](https://kubernetes.io/fr/docs/concepts/configuration/secret/)
 - [nginx ingress controller](https://docs.nginx.com/nginx-ingress-controller)
 This will deploy a reverse proxy pod and a load balancer service
 - [cloudflaire dns records](https://developers.cloudflare.com/dns/manage-dns-records/how-to/create-dns-records/)
 In order to use the cardboardcitizen.com domain name, you will configure the redirection
 - [ssl certificate with aws certificate manager](https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html)
 This will create an ssl certificate that will be renewed automatically
+
+### Deploy the secrets
+
+Some variables are needed by the deployed pods but must be hidden by others for
+security reasons. Before doing anything, if you are setting up this cluster for the
+first time, make sure to create the required secrets.
+
+Copy the ``.env.example`` file as ``.env`` and update the variables with your secret
+values then run
+
+```bash
+kubectl create secret generic cz-secret --from-env-file ./.env -n cz-alpha-stack
+```
 
 ### Install the nginx ingress controller
 
@@ -153,7 +166,7 @@ leave everything to default.
 
 Once the certificate has been created, you will need to validate the certificate.
 To do so, go the the details of the certificate and get the ``CNAME name`` and the
-``CNAME value`` (the name should look like [garbage].alphatesting.xyz and 
+``CNAME value`` (the name should look like [garbage].alphatesting.xyz and
 [garbage].acm-validation.aws). To prove that you are the owner of the domain, you
 will have to go to the cloudflaire DNS and create a CNAME entry with the name and
 the value you just got (since cloudflaire is a CDN, make sure to disable the proxy
